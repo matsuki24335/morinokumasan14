@@ -1,0 +1,985 @@
+openapi: 3.1.0
+info:
+  title: 補助金情報取得API
+  description: 補助金情報取得API
+  version: "1.0"
+servers:
+- url: https://api.jgrants-portal.go.jp/exp
+paths:
+  /v1/public/subsidies:
+    get:
+      summary: 補助金一覧取得API（Search subsidies with conditions）
+      description: 補助金一覧取得API（Search subsidies with conditions）
+      parameters:
+      - name: request
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/subsidiesRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/subsidy-summaries-response"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/500-error-response"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+              example:
+                message: Bad request
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+              example:
+                message: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+              example:
+                message: Resource not found
+        "405":
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+              example:
+                message: Method not allowed
+        "406":
+          description: Not Acceptable
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+              example:
+                message: Not acceptable
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+              example:
+                message: Unsupported media type
+        "501":
+          description: Not Implemented
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+              example:
+                message: Not Implemented
+  /v1/public/subsidies/id/{id}:
+    get:
+      summary: 補助金詳細取得API（Retrieve a subsidy detail）
+      description: 補助金詳細取得API（Retrieve a subsidy detail）
+      parameters:
+      - name: id
+        in: path
+        description: 補助金ID（Subsidy ID）
+        required: true
+        schema:
+          type: string
+          description: 補助金ID（Subsidy ID）
+          maxLength: 18
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/subsidy-details-response"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/500-error-response"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+              example:
+                message: Bad request
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+              example:
+                message: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+              example:
+                message: Resource not found
+        "405":
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+              example:
+                message: Method not allowed
+        "406":
+          description: Not Acceptable
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+              example:
+                message: Not acceptable
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+              example:
+                message: Unsupported media type
+        "501":
+          description: Not Implemented
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+              example:
+                message: Not Implemented
+  /v2/public/subsidies/id/{id}:
+    get:
+      summary: 補助金詳細取得API V2（Retrieve a subsidy detail V2）
+      description: 補助金詳細取得API V2（Retrieve a subsidy detail V2）
+      parameters:
+      - name: id
+        in: path
+        description: 補助金ID（Subsidy ID）
+        required: true
+        schema:
+          type: string
+          description: 補助金ID（Subsidy ID）
+          maxLength: 18
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/subsidy-details-response-v2"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/500-error-response"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+              example:
+                message: Bad request
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+              example:
+                message: Unauthorized
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+              example:
+                message: Resource not found
+        "405":
+          description: Method Not Allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+              example:
+                message: Method not allowed
+        "406":
+          description: Not Acceptable
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+              example:
+                message: Not acceptable
+        "415":
+          description: Unsupported Media Type
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+              example:
+                message: Unsupported media type
+        "501":
+          description: Not Implemented
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+              example:
+                message: Not Implemented
+components:
+  schemas:
+    file_data:
+      type: object
+      additionalProperties: true
+      properties:
+        name:
+          type: string
+          description: ファイル名（File name）
+          example: ガイドライン.pdf
+          maxLength: 255
+        data:
+          type: string
+          description: データ（File data）<br>Base64形式
+    type_1:
+      type: object
+      additionalProperties: true
+      description: 補助金詳細照会結果情報（Result of querying subsidy detail）
+      properties:
+        id:
+          type: string
+          description: 補助金ID（Subsidy ID）
+          example: S0J0w00wer0wUgr77E
+          maxLength: 18
+        name:
+          type: string
+          description: 補助金番号（Subsidy number）
+          example: S-01100011
+          maxLength: 10
+        title:
+          type: string
+          description: 補助金名（Subsidy name）
+          example: 小規模事業者補助金
+          maxLength: 100
+        subsidy_catch_phrase:
+          type: string
+          description: 補助金のキャッチコピー（Advertising slogan）
+          example: 小規模事業者の生産性向上と持続的発展を図る
+          maxLength: 255
+        detail:
+          type: string
+          description: 補助金のサマリー（Purpose / Overview）
+          example: 小規模事業者が取り組む販路開拓等の取組の経費の一部を補助することにより、生産性向上と持続的発展を図ることを目的とします。
+          maxLength: 131072
+        use_purpose:
+          type: string
+          description: 利用目的（Use of subsidies）<br>値が複数ある場合は、「 / 」（半角スペース＋半角スラッシュ＋半角スペース）で区切る。<br>・新たな事業を行いたい<br>・販路拡大・海外展開をしたい<br>・イベント・事業運営支援がほしい<br>・事業を引き継ぎたい<br>・研究開発・実証事業を行いたい<br>・人材育成を行いたい<br>・資金繰りを改善したい<br>・設備整備・IT導入をしたい<br>・雇用・職場環境を改善したい<br>・エコ・SDGs活動支援がほしい<br>・災害（自然災害、感染症等）支援がほしい<br>・教育・子育て・少子化支援がほしい<br>・スポーツ・文化支援がほしい<br>・安全・防災対策支援がほしい<br>・まちづくり・地域振興支援がほしい
+          example: 新たな事業を行いたい / 設備整備・IT導入をしたい
+          maxLength: 255
+        industry:
+          type: string
+          description: 業種（Industry）<br>値が複数ある場合は、半角スペース＋半角スラッシュ＋半角スペース）で区切る。<br>・農業、林業<br>・漁業<br>・鉱業、採石業、砂利採取業<br>・建設業<br>・製造業<br>・電気・ガス・熱供給・水道業<br>・情報通信業<br>・運輸業、郵便業<br>・卸売業、小売業<br>・金融業、保険業<br>・不動産業、物品賃貸業<br>・学術研究、専門・技術サービス業<br>・宿泊業、飲食サービス業<br>・生活関連サービス業、娯楽業<br>・教育、学習支援業<br>・医療、福祉<br>・複合サービス事業<br>・サービス業（他に分類されないもの）<br>・公務（他に分類されるものを除く）<br>・分類不能の産業
+          example: 情報通信業 / 教育、学習支援業
+          maxLength: 255
+        target_area_search:
+          type: string
+          description: 補助対象地域（Target area to search）<br>値が複数ある場合は、「 / 」（半角スペース＋半角スラッシュ＋半角スペース）で区切る。<br>・全国<br>・北海道地方<br>・東北地方<br>・関東・甲信越地方<br>・東海・北陸地方<br>・近畿地方<br>・中国地方<br>・四国地方<br>・九州・沖縄地方<br>・北海道<br>・青森県<br>・岩手県<br>・宮城県<br>・秋田県<br>・山形県<br>・福島県<br>・茨城県<br>・栃木県<br>・群馬県<br>・埼玉県<br>・千葉県<br>・東京都<br>・神奈川県<br>・新潟県<br>・富山県<br>・石川県<br>・福井県<br>・山梨県<br>・長野県<br>・岐阜県<br>・静岡県<br>・愛知県<br>・三重県<br>・滋賀県<br>・京都府<br>・大阪府<br>・兵庫県<br>・奈良県<br>・和歌山県<br>・鳥取県<br>・島根県<br>・岡山県<br>・広島県<br>・山口県<br>・徳島県<br>・香川県<br>・愛媛県<br>・高知県<br>・福岡県<br>・佐賀県<br>・長崎県<br>・熊本県<br>・大分県<br>・宮崎県<br>・鹿児島県<br>・沖縄県<br>・海外
+          example: 東京都 / 大阪府
+          maxLength: 1000
+        target_area_detail:
+          type: string
+          description: 補助対象地域詳細（Target area detail）
+          example: 全国
+          maxLength: 255
+        target_number_of_employees:
+          type: string
+          description: 従業員数（Number of employees）
+          enum:
+          - 従業員数の制約なし
+          - 5名以下
+          - 20名以下
+          - 50名以下
+          - 100名以下
+          - 300名以下
+          - 900名以下
+          - 901名以上
+          example: 20名以下
+        subsidy_rate:
+          type: string
+          description: 補助率（Subsidy rate）
+          example: 20%
+          maxLength: 255
+        subsidy_max_limit:
+          type: integer
+          format: int64
+          description: 補助額上限（Subsidy maximum amount）<br>入力値以下の補助額上限が設定されている補助金に絞り込む。
+          example: 10000000
+          maximum: 999999999999999900
+        acceptance_start_datetime:
+          type: string
+          format: date-time
+          description: 募集開始日時（Acceptance start date）
+          example: 2020-02-28T16:41:41.090Z
+        acceptance_end_datetime:
+          type: string
+          format: date-time
+          description: 募集終了日時（Acceptance end date）
+          example: 2021-02-28T16:41:41.090Z
+        project_end_deadline:
+          type: string
+          format: date-time
+          description: 事業終了期限（Project end deadline）
+          example: 2020-07-31T15:00:00.000Z
+        request_reception_presence:
+          type: string
+          description: 申請受付有無（Request acceptability）<br>・有：申請を受付ける<br>・無：申請を受付けない
+          example: 有
+          required:
+          - 有
+          - 無
+        is_enable_multiple_request:
+          type: boolean
+          description: 複数回申請可否（Multiple requests acceptability）<br>・true：申請可<br>・false：申請不可
+          example: false
+        front_subsidy_detail_page_url:
+          type: string
+          description: 事業者向け補助金詳細画面URL
+          example: https://jgrants-2-xxx/subsidy/999999999999999999
+          maxLength: 100
+        application_guidelines:
+          type: array
+          description: 公募要領（Application guidelines）
+          example:
+            name: 公募要領.pdf
+            data: JVBERi0xLjQKJe
+          items:
+            $ref: "#/components/schemas/file_data"
+        outline_of_grant:
+          type: array
+          description: 交付要綱.pdf
+          example:
+            name: 交付要綱.pdf
+            data: JVBERi0xLjQKJe
+          items:
+            $ref: "#/components/schemas/file_data"
+        application_form:
+          type: array
+          description: 申請様式（Application form）
+          example:
+            name: 申請様式.pdf
+            data: JVBERi0xLjQKJe
+          items:
+            $ref: "#/components/schemas/file_data"
+        institution_name:
+          type: string
+          description: 制度名（Institution name）
+          example: 小規模事業者生産性向上支援事業
+      required:
+      - id
+      - name
+    subsidy-details-response:
+      type: object
+      additionalProperties: true
+      description: 補助金詳細照会結果情報（Result of querying subsidy detail）
+      properties:
+        metadata:
+          $ref: "#/components/schemas/Metadata"
+          additionalProperties: true
+          description: API仕様公開URL（API Specification URL）
+        result:
+          type: array
+          additionalProperties: true
+          description: 補助金詳細照会結果情報（Result of retrieving subsidy detail）
+          items:
+            $ref: "#/components/schemas/type_1"
+      required:
+      - metadata
+      - result
+    type:
+      type: object
+      additionalProperties: true
+      description: 補助金一覧検索結果情報（Result of querying subsidies list）
+      properties:
+        id:
+          type: string
+          description: 補助金ID（Subsidy ID）
+          example: S0J0w00wer0wUgr77E
+          maxLength: 18
+        name:
+          type: string
+          description: 補助金番号（Subsidy number）
+          example: S-01100011
+          maxLength: 10
+        title:
+          type: string
+          description: 補助金名（Subsidy name）
+          example: 小規模事業者補助金
+          maxLength: 100
+        target_area_search:
+          type: string
+          description: 補助対象地域（Target area to search）<br>値が複数ある場合は、「 / 」（半角スペース＋半角スラッシュ＋半角スペース）で区切る。<br>・全国<br>・北海道地方<br>・東北地方<br>・関東・甲信越地方<br>・東海・北陸地方<br>・近畿地方<br>・中国地方<br>・四国地方<br>・九州・沖縄地方<br>・北海道<br>・青森県<br>・岩手県<br>・宮城県<br>・秋田県<br>・山形県<br>・福島県<br>・茨城県<br>・栃木県<br>・群馬県<br>・埼玉県<br>・千葉県<br>・東京都<br>・神奈川県<br>・新潟県<br>・富山県<br>・石川県<br>・福井県<br>・山梨県<br>・長野県<br>・岐阜県<br>・静岡県<br>・愛知県<br>・三重県<br>・滋賀県<br>・京都府<br>・大阪府<br>・兵庫県<br>・奈良県<br>・和歌山県<br>・鳥取県<br>・島根県<br>・岡山県<br>・広島県<br>・山口県<br>・徳島県<br>・香川県<br>・愛媛県<br>・高知県<br>・福岡県<br>・佐賀県<br>・長崎県<br>・熊本県<br>・大分県<br>・宮崎県<br>・鹿児島県<br>・沖縄県<br>・海外
+          example: 東京都 / 大阪府
+          maxLength: 1000
+        subsidy_max_limit:
+          type: number
+          description: 補助額上限（Subsidy maximum amount）<br>入力値以下の補助額上限が設定されている補助金に絞り込む。
+          example: 10000000
+          maximum: 999999999999999900
+        acceptance_start_datetime:
+          type: string
+          format: date-time
+          description: 募集開始日時（Acceptance start date）
+          example: 2020-02-28T16:41:41.090Z
+        acceptance_end_datetime:
+          type: string
+          format: date-time
+          description: 募集終了日時（Acceptance end date）
+          example: 2021-02-28T16:41:41.090Z
+        target_number_of_employees:
+          type: string
+          description: 従業員数（Number of employees）
+          enum:
+          - 従業員数の制約なし
+          - 5名以下
+          - 20名以下
+          - 50名以下
+          - 100名以下
+          - 300名以下
+          - 900名以下
+          - 901名以上
+          example: 20名以下
+        institution_name:
+          type: string
+          description: 制度名（Institution name）
+          example: 小規模事業者生産性向上支援事業
+          maxLength: 150
+      required:
+      - id
+      - name
+    subsidiesRequest:
+      type: object
+      properties:
+        keyword:
+          type: string
+          description: 検索キーワード（Keyword for search）<br>最小文字数は2文字とする（スペース入力不可）。<br>大文字・小文字や全角・半角の表記ゆれを許容する（例：IoTとIOT、IoTとⅠoＴ、カタカナとｶﾀｶﾅを区別しない）。
+          maxLength: 255
+          minLength: 2
+        sort:
+          type: string
+          description: ソート項目名（Field name to order by）<br>ソート項目名で指定した項目をソート順で並替える。<br>・created_date：作成日時<br>・acceptance_start_datetime：募集開始日時<br>・acceptance_end_datetime：募集終了日時
+          enum:
+          - created_date
+          - acceptance_start_datetime
+          - acceptance_end_datetime
+        order:
+          type: string
+          description: ソート順（Sort order）<br>ソート項目名で指定した項目をソート順で並替える。<br>・ASC：昇順<br>・DESC：降順
+          enum:
+          - ASC
+          - DESC
+        acceptance:
+          type: string
+          description: 募集期間内絞込要否（Within an acceptance period）<br>・0：否<br>・1：要
+          enum:
+          - "0"
+          - "1"
+        use_purpose:
+          type: string
+          description: 利用目的（Use of subsidies）<br>値が複数ある場合は、「 / 」（半角スペース＋半角スラッシュ＋半角スペース）で区切る。<br>・新たな事業を行いたい<br>・販路拡大・海外展開をしたい<br>・イベント・事業運営支援がほしい<br>・事業を引き継ぎたい<br>・研究開発・実証事業を行いたい<br>・人材育成を行いたい<br>・資金繰りを改善したい<br>・設備整備・IT導入をしたい<br>・雇用・職場環境を改善したい<br>・エコ・SDGs活動支援がほしい<br>・災害（自然災害、感染症等）支援がほしい<br>・教育・子育て・少子化支援がほしい<br>・スポーツ・文化支援がほしい<br>・安全・防災対策支援がほしい<br>・まちづくり・地域振興支援がほしい
+          maxLength: 255
+        industry:
+          type: string
+          description: 業種（Industry）<br>値が複数ある場合は、半角スペース＋半角スラッシュ＋半角スペース）で区切る。<br>・農業、林業<br>・漁業<br>・鉱業、採石業、砂利採取業<br>・建設業<br>・製造業<br>・電気・ガス・熱供給・水道業<br>・情報通信業<br>・運輸業、郵便業<br>・卸売業、小売業<br>・金融業、保険業<br>・不動産業、物品賃貸業<br>・学術研究、専門・技術サービス業<br>・宿泊業、飲食サービス業<br>・生活関連サービス業、娯楽業<br>・教育、学習支援業<br>・医療、福祉<br>・複合サービス事業<br>・サービス業（他に分類されないもの）<br>・公務（他に分類されるものを除く）<br>・分類不能の産業
+          maxLength: 255
+          minLength: 0
+        target_number_of_employees:
+          type: string
+          description: 従業員数（Number of employees）
+          enum:
+          - 従業員数の制約なし
+          - 5名以下
+          - 20名以下
+          - 50名以下
+          - 100名以下
+          - 300名以下
+          - 900名以下
+          - 901名以上
+        target_area_search:
+          type: string
+          description: 補助対象地域（Target area to search）
+          enum:
+          - 全国
+          - 北海道地方
+          - 東北地方
+          - 関東・甲信越地方
+          - 東海・北陸地方
+          - 近畿地方
+          - 中国地方
+          - 四国地方
+          - 九州・沖縄地方
+          - 北海道
+          - 青森県
+          - 岩手県
+          - 宮城県
+          - 秋田県
+          - 山形県
+          - 福島県
+          - 茨城県
+          - 栃木県
+          - 群馬県
+          - 埼玉県
+          - 千葉県
+          - 東京都
+          - 神奈川県
+          - 新潟県
+          - 富山県
+          - 石川県
+          - 福井県
+          - 山梨県
+          - 長野県
+          - 岐阜県
+          - 静岡県
+          - 愛知県
+          - 三重県
+          - 滋賀県
+          - 京都府
+          - 大阪府
+          - 兵庫県
+          - 奈良県
+          - 和歌山県
+          - 鳥取県
+          - 島根県
+          - 岡山県
+          - 広島県
+          - 山口県
+          - 徳島県
+          - 香川県
+          - 愛媛県
+          - 高知県
+          - 福岡県
+          - 佐賀県
+          - 長崎県
+          - 熊本県
+          - 大分県
+          - 宮崎県
+          - 鹿児島県
+          - 沖縄県
+          - 海外
+        institution_name:
+          type: string
+          description: 制度名（Institution name）
+      required:
+      - acceptance
+      - keyword
+      - order
+      - sort
+    subsidy-summaries-response:
+      type: object
+      additionalProperties: true
+      description: 補助金一覧検索結果情報（Result of querying subsidies list）
+      properties:
+        metadata:
+          $ref: "#/components/schemas/Metadata"
+          required:
+          - resultset
+          - type
+        result:
+          type: array
+          description: 補助金一覧検索結果情報（Result of querying subsidies list）
+          items:
+            $ref: "#/components/schemas/type"
+      required:
+      - metadata
+      - result
+    ResultFile:
+      type: object
+      properties:
+        name:
+          type: string
+          description: ファイル名（File name）
+          example: ガイドライン.pdf
+          maxLength: 255
+        data:
+          type: string
+          description: データ（File data）<br>Base64形式
+    Workflow:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ワークフローID（id）
+          example: a0GBE000005RJTW2A4
+        target_area_search:
+          type: string
+          description: 補助対象地域（Target area to search）<br>値が複数ある場合は、「 / 」（半角スペース＋半角スラッシュ＋半角スペース）で区切る。<br>・全国<br>・北海道地方<br>・東北地方<br>・関東・甲信越地方<br>・東海・北陸地方<br>・近畿地方<br>・中国地方<br>・四国地方<br>・九州・沖縄地方<br>・北海道<br>・青森県<br>・岩手県<br>・宮城県<br>・秋田県<br>・山形県<br>・福島県<br>・茨城県<br>・栃木県<br>・群馬県<br>・埼玉県<br>・千葉県<br>・東京都<br>・神奈川県<br>・新潟県<br>・富山県<br>・石川県<br>・福井県<br>・山梨県<br>・長野県<br>・岐阜県<br>・静岡県<br>・愛知県<br>・三重県<br>・滋賀県<br>・京都府<br>・大阪府<br>・兵庫県<br>・奈良県<br>・和歌山県<br>・鳥取県<br>・島根県<br>・岡山県<br>・広島県<br>・山口県<br>・徳島県<br>・香川県<br>・愛媛県<br>・高知県<br>・福岡県<br>・佐賀県<br>・長崎県<br>・熊本県<br>・大分県<br>・宮崎県<br>・鹿児島県<br>・沖縄県<br>・海外
+          example: 東京都 / 大阪府
+          maxLength: 1000
+        target_area_detail:
+          type: string
+          description: 補助対象地域詳細（Target area detail）
+          example: 全国
+          maxLength: 255
+        fiscal_year_round:
+          type: string
+          description: 募集名（fiscal_year_round）
+          example: 第54回
+          maxLength: 20
+        acceptance_start_datetime:
+          type: string
+          format: date-time
+          description: 募集開始日時（Acceptance start date）
+          example: 2020-02-28T16:41:41.090Z
+        acceptance_end_datetime:
+          type: string
+          format: date-time
+          description: 募集終了日時（Acceptance end date）
+          example: 2021-02-28T16:41:41.090Z
+        project_end_deadline:
+          type: string
+          format: date-time
+          description: 事業終了期限（Project end deadline）
+          example: 2020-07-31T15:00:00.000Z
+    type_1_v2:
+      type: object
+      additionalProperties: true
+      description: 補助金詳細照会結果情報 V2（Result of querying subsidy detail V2）
+      properties:
+        id:
+          type: string
+          description: 補助金ID（Subsidy ID）
+          example: S0J0w00wer0wUgr77E
+          maxLength: 18
+        name:
+          type: string
+          description: 補助金番号（Subsidy number）
+          example: S-01100011
+          maxLength: 10
+        title:
+          type: string
+          description: 補助金名（Subsidy name）
+          example: 小規模事業者補助金
+          maxLength: 100
+        subsidy_catch_phrase:
+          type: string
+          description: 補助金のキャッチコピー（Advertising slogan）
+          example: 小規模事業者の生産性向上と持続的発展を図る
+          maxLength: 255
+        detail:
+          type: string
+          description: 補助金のサマリー（Purpose / Overview）
+          example: 小規模事業者が取り組む販路開拓等の取組の経費の一部を補助することにより、生産性向上と持続的発展を図ることを目的とします。
+          maxLength: 131072
+        use_purpose:
+          type: string
+          description: 利用目的（Use of subsidies）<br>値が複数ある場合は、「 / 」（半角スペース＋半角スラッシュ＋半角スペース）で区切る。<br>・新たな事業を行いたい<br>・販路拡大・海外展開をしたい<br>・イベント・事業運営支援がほしい<br>・事業を引き継ぎたい<br>・研究開発・実証事業を行いたい<br>・人材育成を行いたい<br>・資金繰りを改善したい<br>・設備整備・IT導入をしたい<br>・雇用・職場環境を改善したい<br>・エコ・SDGs活動支援がほしい<br>・災害（自然災害、感染症等）支援がほしい<br>・教育・子育て・少子化支援がほしい<br>・スポーツ・文化支援がほしい<br>・安全・防災対策支援がほしい<br>・まちづくり・地域振興支援がほしい
+          example: 新たな事業を行いたい / 設備整備・IT導入をしたい
+          maxLength: 255
+        industry:
+          type: string
+          description: 業種（Industry）<br>値が複数ある場合は、半角スペース＋半角スラッシュ＋半角スペース）で区切る。<br>・農業、林業<br>・漁業<br>・鉱業、採石業、砂利採取業<br>・建設業<br>・製造業<br>・電気・ガス・熱供給・水道業<br>・情報通信業<br>・運輸業、郵便業<br>・卸売業、小売業<br>・金融業、保険業<br>・不動産業、物品賃貸業<br>・学術研究、専門・技術サービス業<br>・宿泊業、飲食サービス業<br>・生活関連サービス業、娯楽業<br>・教育、学習支援業<br>・医療、福祉<br>・複合サービス事業<br>・サービス業（他に分類されないもの）<br>・公務（他に分類されるものを除く）<br>・分類不能の産業
+          example: 情報通信業 / 教育、学習支援業
+          maxLength: 255
+        target_number_of_employees:
+          type: string
+          description: 従業員数（Number of employees）
+          enum:
+          - 従業員数の制約なし
+          - 5名以下
+          - 20名以下
+          - 50名以下
+          - 100名以下
+          - 300名以下
+          - 900名以下
+          - 901名以上
+          example: 20名以下
+        subsidy_rate:
+          type: string
+          description: 補助率（Subsidy rate）
+          example: 20%
+          maxLength: 255
+        subsidy_max_limit:
+          type: integer
+          format: int64
+          description: 補助額上限（Subsidy maximum amount）<br>入力値以下の補助額上限が設定されている補助金に絞り込む。
+          example: 10000000
+          maximum: 999999999999999900
+        request_reception_presence:
+          type: string
+          description: 申請受付有無（Request acceptability）<br>・有：申請を受付ける<br>・無：申請を受付けない
+          example: 有
+          required:
+          - 有
+          - 無
+        is_enable_multiple_request:
+          type: boolean
+          description: 複数回申請可否（Multiple requests acceptability）<br>・true：申請可<br>・false：申請不可
+          example: false
+        front_subsidy_detail_page_url:
+          type: string
+          description: 事業者向け補助金詳細画面URL
+          example: https://jgrants-2-xxx/subsidy/999999999999999999
+          maxLength: 100
+        granttype:
+          type: string
+          description: 類型（granttype）
+          example: 一般型
+        application_guidelines:
+          type: array
+          description: 公募要領（Application guidelines）
+          example:
+            name: 公募要領.pdf
+            data: JVBERi0xLjQKJe
+          items:
+            $ref: "#/components/schemas/ResultFile"
+        outline_of_grant:
+          type: array
+          description: 交付要綱.pdf
+          example:
+            name: 交付要綱.pdf
+            data: JVBERi0xLjQKJe
+          items:
+            $ref: "#/components/schemas/ResultFile"
+        application_form:
+          type: array
+          description: 申請様式（Application form）
+          example:
+            name: 申請様式.pdf
+            data: JVBERi0xLjQKJe
+          items:
+            $ref: "#/components/schemas/ResultFile"
+        workflow:
+          type: array
+          description: ワークフロー（workflow）
+          example:
+          - id: a0GBE000005RJTW2A4
+            target_area_search: 大分県
+            target_area_detail: 全国
+            fiscal_year_round: 第54回
+            acceptance_start_datetime: 2025-10-01T15:00Z
+            acceptance_end_datetime: 2026-03-21T15:00Z
+            project_end_deadline: 2027-12-31T15:00Z
+          items:
+            $ref: "#/components/schemas/Workflow"
+        institution_name:
+          type: string
+          description: 制度名（Institution name）
+          example: 小規模事業者生産性向上支援事業
+      required:
+      - id
+      - name
+    subsidy-details-response-v2:
+      type: object
+      additionalProperties: true
+      description: 補助金詳細照会結果情報 V2（Result of querying subsidy detail V2）
+      properties:
+        metadata:
+          $ref: "#/components/schemas/Metadata"
+          additionalProperties: true
+          description: API仕様公開URL（API Specification URL）
+        result:
+          type: array
+          additionalProperties: true
+          description: 補助金詳細照会結果情報（Result of retrieving subsidy detail）
+          items:
+            $ref: "#/components/schemas/type_1_v2"
+      required:
+      - metadata
+      - result
+    Metadata:
+      type: object
+      properties:
+        type:
+          type: string
+          additionalProperties: true
+          description: API仕様公開URL（API Specification URL）
+          example: https://developers.digital.go.jp/documents/jgrants/api/
+          required:
+          - resultset
+          - type
+        resultset:
+          $ref: "#/components/schemas/Resultset"
+          additionalProperties: true
+          required:
+          - count
+    Resultset:
+      type: object
+      properties:
+        count:
+          type: integer
+          format: int
+          description: 取得件数（Number of results）
+          example: 1
+    "500-error-response":
+      type: object
+      additionalProperties: true
+      description: エラー情報（Result of error）
+      properties:
+        type:
+          type: string
+          description: API仕様公開URL（API Specification URL）
+          example: https://developers.digital.go.jp/documents/jgrants/api/
+        errorCode:
+          type: string
+          description: エラーコード（Error code）<br>・E-ML-9999：内部サーバエラー
+          example: E-ML-9999
+        title:
+          type: string
+          description: エラータイトル（Error title）
+          example: Internal Server Error
+        instance:
+          type: string
+          description: HTTPリクエストURI（HTTP request URI）
+          example: /api/subsidies
+      required:
+      - errorCode
+      - instance
+      - title
+      - type

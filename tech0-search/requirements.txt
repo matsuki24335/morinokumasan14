@@ -1,0 +1,7 @@
+# w4 で使う外部ライブラリ
+# インストール： pip install -r requirements.txt
+streamlit
+requests
+beautifulsoup4
+scikit-learn
+pdfplumber
