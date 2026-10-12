@@ -34,6 +34,7 @@ def get_connection():
     
     # クエリの返り値を `row['title']` や `dict(row)` のように扱えるよう設定
     conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA foreign_keys = ON")   # なかの追記
     return conn
 
 
@@ -129,3 +130,104 @@ def get_all_subsidies() ->  list[dict]:
     rows = conn.execute("SELECT * FROM subsidies").fetchall()
     conn.close()
     return [dict(r) for r in rows]
+
+#なかの追記
+def insert_knowledge(k: dict) -> int:
+    """ナレッジ（活用事例）を1件登録する
+
+    Args:
+        k (dict): subsidy_id と usage_detail は必須。ほかは省略可。
+    Returns:
+        int: 登録されたナレッジの id
+    """
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        INSERT INTO knowledge
+            (subsidy_id, usage_detail, received_amount,
+            shop_category, shop_area, proposal_point,
+            author, owner_words, caution, difficulty, total_cost)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        k["subsidy_id"],
+        k["usage_detail"],
+        k.get("received_amount", 0),
+        k.get("shop_category", ""),   # shop_category
+        k.get("shop_area", ""),       # shop_area
+        k.get("proposal_point", ""),  # proposal_point
+        k.get("author", ""),          # author
+        k.get("owner_words", ""),     # owner_words
+        k.get("caution", ""),         # caution
+        k.get("difficulty", ""),      # difficulty
+        k.get("total_cost", 0),      # total_cost
+    ))
+
+    knowledge_id = cursor.lastrowid
+    conn.commit()
+    conn.close()
+    return knowledge_id
+
+#なかの追記
+def get_knowledge_by_subsidy(subsidy_id: int) -> list[dict]:
+    """指定した補助金に紐づくナレッジを、新しい順に返す
+
+    Args:
+        subsidy_id (int): subsidies.id
+    Returns:
+        list[dict]: ナレッジのリスト（無ければ空リスト）
+    """
+    conn = get_connection()
+    rows = conn.execute(
+        "SELECT * FROM knowledge WHERE subsidy_id = ? ORDER BY created_at DESC",
+        (subsidy_id,),
+    ).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+#なかの追記
+#事例一覧タブで用いる関数。
+def get_all_knowledge() -> list[dict]:
+    """全ナレッジを、補助金名つきで新しい順に返す（事例一覧タブ用）
+
+    Returns:
+        list[dict]: ナレッジの全列 + subsidy_title（補助金名）
+    """
+    conn = get_connection()
+    rows = conn.execute("""
+        SELECT k.*, s.title AS subsidy_title
+        FROM knowledge k
+        JOIN subsidies s ON k.subsidy_id = s.id
+        ORDER BY k.created_at DESC
+    """).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+
+#なかの追記
+#お気に入り、を押すための関数
+def add_favorite(knowledge_id, user_name):
+    """お気に入りを登録する。同じ人が同じ事例を2回押したら False を返す"""
+    conn = get_connection()
+    try:
+        conn.execute(
+            "INSERT INTO favorites (knowledge_id, user_name) VALUES (?, ?)",
+            (knowledge_id, user_name),
+        )
+        conn.commit()
+        return True
+    except sqlite3.IntegrityError:
+        return False
+    finally:
+        conn.close()
+
+#なかの追記
+#お気に入りの数を数える
+def get_favorite_counts():
+    """事例ごとのお気に入り数を {knowledge_id: 件数} の辞書で返す"""
+    conn = get_connection()
+    rows = conn.execute(
+        "SELECT knowledge_id, COUNT(*) AS cnt FROM favorites GROUP BY knowledge_id"
+    ).fetchall()
+    conn.close()
+    return {r["knowledge_id"]: r["cnt"] for r in rows}
